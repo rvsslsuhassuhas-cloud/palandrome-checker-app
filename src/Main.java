@@ -1,17 +1,30 @@
 import java.util.Stack;
-import java.util.Deque;
-import java.util.LinkedList;
 
-// Strategy Interface
-interface PalindromeStrategy {
-    boolean checkPalindrome(String word);
-}
+public class UseCase13PalindromeCheckerApp {
 
-// Stack Strategy
-class StackStrategy implements PalindromeStrategy {
+    // Method 1: Reverse String
+    public static boolean reverseCheck(String word) {
+        String reversed = new StringBuilder(word).reverse().toString();
+        return word.equals(reversed);
+    }
 
-    public boolean checkPalindrome(String word) {
+    // Method 2: Two Pointer Check
+    public static boolean twoPointerCheck(String word) {
+        int start = 0;
+        int end = word.length() - 1;
 
+        while (start < end) {
+            if (word.charAt(start) != word.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
+    }
+
+    // Method 3: Stack Check
+    public static boolean stackCheck(String word) {
         Stack<Character> stack = new Stack<>();
 
         for (char c : word.toCharArray()) {
@@ -23,61 +36,35 @@ class StackStrategy implements PalindromeStrategy {
                 return false;
             }
         }
-
         return true;
     }
-}
-
-// Deque Strategy
-class DequeStrategy implements PalindromeStrategy {
-
-    public boolean checkPalindrome(String word) {
-
-        Deque<Character> deque = new LinkedList<>();
-
-        for (char c : word.toCharArray()) {
-            deque.addLast(c);
-        }
-
-        while (deque.size() > 1) {
-            if (deque.removeFirst() != deque.removeLast()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-}
-
-// Context class
-class PalindromeChecker {
-
-    private PalindromeStrategy strategy;
-
-    public PalindromeChecker(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public boolean check(String word) {
-        return strategy.checkPalindrome(word);
-    }
-}
-
-// Main Application
-public class UseCase12PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         String word = "madam";
 
-        // Choose strategy dynamically
-        PalindromeChecker checker = new PalindromeChecker(new StackStrategy());
-        // PalindromeChecker checker = new PalindromeChecker(new DequeStrategy());
+        // Reverse method timing
+        long start1 = System.nanoTime();
+        boolean result1 = reverseCheck(word);
+        long end1 = System.nanoTime();
 
-        if (checker.check(word)) {
-            System.out.println(word + " is a Palindrome");
-        } else {
-            System.out.println(word + " is NOT a Palindrome");
-        }
+        // Two pointer timing
+        long start2 = System.nanoTime();
+        boolean result2 = twoPointerCheck(word);
+        long end2 = System.nanoTime();
+
+        // Stack method timing
+        long start3 = System.nanoTime();
+        boolean result3 = stackCheck(word);
+        long end3 = System.nanoTime();
+
+        System.out.println("Reverse Method Result: " + result1 +
+                " | Time: " + (end1 - start1) + " ns");
+
+        System.out.println("Two Pointer Method Result: " + result2 +
+                " | Time: " + (end2 - start2) + " ns");
+
+        System.out.println("Stack Method Result: " + result3 +
+                " | Time: " + (end3 - start3) + " ns");
     }
 }
