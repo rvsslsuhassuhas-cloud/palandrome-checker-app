@@ -1,29 +1,25 @@
+import java.util.Stack;
+
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        // Original string
-        String word = "radar";
+        String word = "madam";
+        Stack<Character> stack = new Stack<>();
 
-        // Convert string to character array
-        char[] chars = word.toCharArray();
-
-        int start = 0;
-        int end = chars.length - 1;
-        boolean isPalindrome = true;
-
-        // Two-pointer comparison
-        while (start < end) {
-            if (chars[start] != chars[end]) {
-                isPalindrome = false;
-                break;
-            }
-            start++;
-            end--;
+        // Push characters into stack
+        for (int i = 0; i < word.length(); i++) {
+            stack.push(word.charAt(i));
         }
 
-        // Print result
-        if (isPalindrome) {
+        // Build reversed string using pop
+        String reversed = "";
+        while (!stack.isEmpty()) {
+            reversed = reversed + stack.pop();
+        }
+
+        // Compare original and reversed
+        if (word.equals(reversed)) {
             System.out.println("The word \"" + word + "\" is a Palindrome.");
         } else {
             System.out.println("The word \"" + word + "\" is NOT a Palindrome.");
